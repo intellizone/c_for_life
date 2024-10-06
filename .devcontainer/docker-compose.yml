@@ -1,0 +1,7 @@
+name: devcontainer_c_for_life
+services:
+  ubuntu:
+    image: public.ecr.aws/ubuntu/ubuntu:20.04_stable
+    command: sleep infinity
+    volumes:
+    - ..:/code
