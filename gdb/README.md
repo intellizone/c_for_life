@@ -55,7 +55,7 @@ run
 next
 
 # next instruction or next line in assembly code
-next
+nexti
 
 # step into a function
 step
