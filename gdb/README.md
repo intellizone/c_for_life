@@ -49,3 +49,31 @@ break main
 ```bash
 run
 ```
+5. running along debugger
+```bash
+# for next line of c code
+next
+
+# next instruction or next line in assembly code
+next
+
+# step into a function
+step
+```
+6. Refresh the screen/console
+```bash
+ref
+# ( or )
+refresh
+```
+7. examine memory
+```bash
+x/i $pc
+# x   - examine memory
+# /i  - display as instructions or disassembly
+# $pc - value in program counter
+```
+8. examine registers
+```bash
+info registers
+```
