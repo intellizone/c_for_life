@@ -189,10 +189,193 @@ int main(int argc, string argv[]);
 // argc --> argument count
 // argv --> argument vector
 ```
+```bash
+# usage
+./main "someText"
+```
 
 ## strings in c
 ```c
 #include <string.h>
 
 int strlen(char *string);
+```
+
+## character operations in c
+```c
+#include <ctype.h>
+```
+
+## exit code
+> mostly exit code **0** indicates success \
+> Non 0 indicates something \
+> -ve values says errors or  failures.
+
+## functions
+- subroutines 
+- procedures
+- methods
+- blackbox
+
+### why functions?
+- organization
+- simplification - easy to debug
+- reusability 
+
+all meaning the same
+
+input --> functions --> outputs
+
+```c
+// return_value_type function_name(argument_type argument_variable/value,.....);
+int mul(int a, int b);
+```
+
+> no return value use "void"
+```c
+void main(void)
+// no input no output
+```
+
+## type-casting
+```c
+// (int) 3.0
+
+
+#include <stdio.h>
+
+int main(void){
+    printf("%i\n",(int) 3.0);
+}
+```
+## variable scope
+- local
+- global
+
+## Algorithms:
+### Big O notaion (O) - Worst case senario:
+- O($n^2$)
+- O(nlogn)
+- O(n)      - Linear search
+- O(logn) - Binary search
+- O(1)
+### Big omega - Best case senario - ($\Omega$)
+- $\Omega$($n^2$)
+- $\Omega$(nlogn)
+- $\Omega$(n)
+- $\Omega$(logn)
+- $\Omega$(1) - Linear search, binary search
+
+### Teta notation - When big O and big omega are same
+- $\theta$($n^2$)
+- $\theta$(nlogn)
+- $\theta$(n)
+- $\theta$(logn)
+- $\theta$(1)
+
+
+## Linear search
+- Search one by one
+
+```c
+#include <cs50.h>
+#include <stdio.h>
+
+int linear_search(int arr[], int l, int k);
+
+int main(void)
+{
+    int arr_len = 7;
+    int arr[] = {200, 10, 5, 70, 95, 86, 80};
+    int key = get_int("Enter search number: ");
+
+    if (linear_search(arr, arr_len, key) == 0)
+    {
+        printf("Found\n");
+    }
+    else
+    {
+        printf("Not Found\n");
+    }
+}
+
+int linear_search(int arr[], int l, int k)
+{
+    for (int i = 0; i < l; i++)
+    {
+        if (arr[i] == k)
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+```
+
+## Data Structures:
+```c
+typedef struct
+{
+    // data_type variable_name;
+    string name;
+    string number;
+} person;
+
+person persons;
+persons.name = "John";
+persons.number = "+11-111-111";
+```
+
+```c
+#include <cs50.h>
+#include <stdio.h>
+#include <string.h>
+
+typedef struct
+{
+    string name;
+    string location;
+} person;
+
+int linear_search(person arr[], int l, string k);
+
+int main(void)
+{
+    int arr_len = 3;
+    person people[arr_len];
+    people[0].name = "Suriya";
+    people[0].location = "Pune";
+
+    people[1].name = "Dragon";
+    people[1].location = "Mars";
+
+    people[2].name = "john";
+    people[2].location = "Delhi";
+
+    string key = get_string("Enter search word: ");
+
+    int index = linear_search(people, arr_len, key);
+    if (index != -1)
+    {
+        printf("Lives in %s\n", people[index].location);
+    }
+    else
+    {
+        printf("Not Found\n");
+    }
+}
+
+int linear_search(person arr[], int l, string k)
+{
+    for (int i = 0; i < l; i++)
+    {
+        if (strcmp(arr[i].name, k) == 0)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
 ```
