@@ -328,6 +328,8 @@ persons.number = "+11-111-111";
 ```
 
 ```c
+// Linear search with string
+
 #include <cs50.h>
 #include <stdio.h>
 #include <string.h>
@@ -377,5 +379,29 @@ int linear_search(person arr[], int l, string k)
     }
     return -1;
 }
+```
 
+## sorting
+### Selection Sort --> O($n^2$), $\Omega$($n^2$), $\theta$($n^2$)
+```MD
+# Algorithm
+For i from 0 to n-1:
+    find smallest number between 0 and n-1
+    swap number[i] with smallest number
+```
+
+```c
+
+```
+
+### Bubble Sort
+```md
+# Algo
+Repeat n-1 times:
+    for i from 0 to n-1:
+        if num[i] and num[i+1] are out of order:
+            swap them
+```
+
+```c
 ```
