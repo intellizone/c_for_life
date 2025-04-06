@@ -656,3 +656,25 @@ void print_arr(int arr[], int l)
 }
 
 ```
+
+## Memory
+- binary - 0,1
+- decimal - 0 ... 9
+- octal - 0 ... 7
+- hexadecimal - 0 ... 9 A ... F
+
+```c
+int n = 50;
+printf("%i\n", n);
+// to print address use & operator
+// & --> address of operator
+printf("%i\n", &n);
+// * --> dereference operator (go to that address)
+// %p --> pointer
+
+int n = 10;
+int *p = &n; // address of n is assigned to p position
+
+printf("%i\n", *p);
+
+```
