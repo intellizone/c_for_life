@@ -391,17 +391,268 @@ For i from 0 to n-1:
 ```
 
 ```c
+#include <cs50.h>
+#include <stdio.h>
+
+void selection_sort(int l, int arr[]);
+
+int main(void)
+{
+    int l = 6, arr[] = {11, 5, 4, 2, 1, 6};
+    selection_sort(l, arr);
+}
+
+void selection_sort(int l, int arr[])
+{
+    int smallest_position, temp;
+    for (int i = 0; i < l; i++)
+    {
+        smallest_position = i;
+        for (int j = i + 1; j < l; j++)
+        {
+            if (arr[j] < arr[smallest_position])
+            {
+                smallest_position = j;
+            }
+        }
+        temp = arr[smallest_position];
+        arr[smallest_position] = arr[i];
+        arr[i] = temp;
+    }
+    for (int i = 0; i < l; i++)
+    {
+        printf("%i ", arr[i]);
+    }
+    printf("\n");
+}
 
 ```
 
-### Bubble Sort
+### Bubble Sort --> O($n^2$), $\Omega$($n^2$) and $\Omega$($n$)
 ```md
-# Algo
+# Algo -- usual way 
 Repeat n-1 times:
     for i from 0 to n-1:
         if num[i] and num[i+1] are out of order:
             swap them
+
+
+####################
+
+# Algo - Optimal way
+Repeat n-1 times:
+    for i from 0 to n-1:
+        if num[i] and num[i+1] are out of order:
+            swap them
+    if no swap:
+        Quit
 ```
 
 ```c
+#include <cs50.h>
+#include <stdio.h>
+
+void bubble_sort(int l, int arr[]);
+void print_arr(int l, int arr[]);
+
+int main(void)
+{
+    int arr[] = {1, 6, 2, 3, 4, 5}, l = 6;
+    bubble_sort(l, arr);
+}
+
+void bubble_sort(int l, int arr[])
+{
+    int temp, swap;
+    for (int i = 0; i < l - 1; i++)
+    {
+        swap = 0;
+        for (int j = 0; j < l - i - 1; j++)
+        {
+            if (arr[j] > arr[j + 1])
+            {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                swap = 1;
+            }
+        }
+        // With optimization - this makes it stop sorting soreted array
+        if (swap == 0)
+        {
+            break;
+        }
+    }
+    print_arr(l, arr);
+}
+
+void print_arr(int l, int arr[])
+{
+    for (int i = 0; i < l; i++)
+        printf("%i ", arr[i]);
+    printf("\n");
+}
+
+```
+
+## Recursion:
+- printing * pyramid with recursion.
+```c
+#include <cs50.h>
+#include <stdio.h>
+
+void draw(int n);
+
+int main(void)
+{
+    int n = get_int("Height: ");
+    draw(n);
+}
+
+void draw(int n)
+{
+    if (n <= 0)
+        return;
+    draw(n - 1);
+    for (int i = 0; i < n; i++)
+        printf("*");
+    printf("\n");
+}
+
+/*
+Output:
+
+Height: 5
+*
+**
+***
+****
+*****
+
+*/
+
+```
+
+```c 
+// binary search with recursion 
+#include <cs50.h>
+#include <stdio.h>
+
+int binary_search(int first, int last, int arr[], int k);
+
+int main(void)
+{
+    int l = 5, arr[] = {1, 2, 3, 4, 5}, k = get_int("Enter a number to search: ");
+    if (binary_search(0, 5, arr, k) == 0)
+    {
+        printf("value %i is found.\n", k);
+    }
+    else
+    {
+        printf("value %i is not found.\n", k);
+    }
+}
+
+int binary_search(int first, int last, int arr[], int k)
+{
+    if (first > last)
+        return 1;
+
+    int middle = first + (last - first) / 2;
+    if (arr[middle] == k)
+        return 0;
+    else if (k < arr[middle])
+        return binary_search(first, middle - 1, arr, k);
+    else
+        return binary_search(middle + 1, last, arr, k);
+}
+
+```
+
+## Merge Sort - O(nlogn) - $\Omega$(nlogn)
+```md
+if only one number:
+    quit
+else:
+    sort the left half
+    sort the right half
+    merge sorted halves
+```
+
+```c
+#include <stdio.h>
+
+void merge_sort(int arr[], int start, int end);
+void merge_arr(int arr[], int start, int end);
+void print_arr(int arr[], int l);
+
+int main(void)
+{
+    int l = 8, arr[] = {5, 2, 7, 1, 3, 8, 6, 4};
+    merge_sort(arr, 0, l - 1);
+    print_arr(arr, l);
+}
+
+void merge_sort(int arr[], int start, int end)
+{
+    if (start >= end)
+        return;
+    else
+    {
+        merge_sort(arr, start, start + (end - start) / 2);
+        merge_sort(arr, start + (end - start) / 2 + 1, end);
+        merge_arr(arr, start, end);
+    }
+}
+
+void merge_arr(int arr[], int start, int end)
+{
+    int mid = start + (end - start) / 2;
+    int ls = start, le = mid, rs = mid + 1, re = end;
+
+    int L[le - ls + 1], R[re - rs + 1];
+
+    for (int i = 0; i <= le - ls; i++)
+        L[i] = arr[ls + i];
+    for (int i = 0; i <= re - rs; i++)
+        R[i] = arr[rs + i];
+
+    int i = 0, j = 0, l = start;
+    while (i <= le - ls && j <= re - rs)
+    {
+        if (L[i] <= R[j])
+        {
+            arr[l] = L[i];
+            i++;
+        }
+        else
+        {
+            arr[l] = R[j];
+            j++;
+        }
+        l++;
+    }
+    // add other elements to array
+
+    while (i <= le - ls)
+    {
+        arr[l] = L[i];
+        i++;
+        l++;
+    }
+    while (j <= re - rs)
+    {
+        arr[l] = R[j];
+        j++;
+        l++;
+    }
+}
+
+void print_arr(int arr[], int l)
+{
+    for (int i = 0; i < l; i++)
+        printf("%i ", arr[i]);
+    printf("\n");
+}
+
 ```
