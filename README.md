@@ -677,4 +677,126 @@ int *p = &n; // address of n is assigned to p position
 
 printf("%i\n", *p);
 
+printf("%p\n", p); // see the difference if %p use pointer variable, if %i use *p. 
+
+printf("%p\n", &n);
+
+
+*p = 100; // or p[0] = 100
+
+printf("%i\n", u); // the above reflects in integer u aswell
+
+```
+### pointer arithmetics
+
+```c
+#include <stdio.h>
+
+int main()
+{
+    char *s = "Hi!";
+    printf("%c\n", s[0]);
+    printf("%c\n", s[1]);
+    printf("%c\n", s[2]);
+    // OR this way
+    printf("%c\n", *(s + 0));
+    printf("%c\n", *(s + 0));
+    printf("%c\n", *(s + 0));
+
+    // both are correct
+}
+```
+
+### memory allocations 
+```c
+#include <stdlib.h>
+
+int main()
+{
+    int *t = malloc(5);
+
+    free(t);
+}
+```
+Memory analysing tool valgrind
+
+
+## file i/o
+- fopen
+- fclose
+- fprintf \
+. \
+. \
+. \
+. \
+. 
+
+
+```c
+int16_t *buffer = malloc(sizeof(int16_t));
+if(buffer == NULL)
+{
+    printf("Malloc failed..\n");
+}
+```
+
+### recover data from a memory card
+```c
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef uint8_t BYTE;
+
+int main(int argc, char *argv[])
+{
+    if (argc != 2)
+    {
+        printf("Usage: %s <file name>\n", argv[0]);
+        return 1;
+    }
+    FILE *memory_card = fopen(argv[1], "r"), *output = NULL;
+    if (memory_card == NULL)
+    {
+        printf("File open failed\n");
+        return 2;
+    }
+    BYTE *buffer = malloc(sizeof(BYTE) * 512);
+    if (buffer == NULL)
+    {
+        printf("Memory allocation failed\n");
+        return 1;
+    }
+
+    int file_num = 0;
+    char *file_name = malloc(sizeof(char) * 10);
+    while (fread(buffer, sizeof(BYTE), 512, memory_card) == 512)
+    {
+        if (buffer[0] == 0xff && buffer[1] == 0xd8 && buffer[2] == 0xff &&
+            (buffer[3] >= 0xe0 && buffer[3] <= 0xef))
+        {
+            if (file_num > 0)
+            {
+                fclose(output);
+            }
+            sprintf(file_name, "%03d.jpg", file_num);
+            output = fopen(file_name, "w");
+            if (output == NULL)
+            {
+                printf("File creation failed\n");
+                return 1;
+            }
+            file_num++;
+        }
+        if (output != NULL)
+        {
+            fwrite(buffer, sizeof(BYTE), 512, output);
+        }
+    }
+    free(buffer);
+    free(file_name);
+    fclose(memory_card);
+    fclose(output);
+}
+
 ```
