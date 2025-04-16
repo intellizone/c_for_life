@@ -325,6 +325,21 @@ typedef struct
 person persons;
 persons.name = "John";
 persons.number = "+11-111-111";
+
+// here dot operator ( . )
+// *
+// -> is using both . and * operator at same time
+
+typedef struct
+{
+    string name;
+    string number;
+} person;
+
+person *new=malloc(sizeof(person));
+(*new).name = "Something";
+//
+new->name = "Something"; // we can use like this aswell
 ```
 
 ```c
@@ -800,3 +815,165 @@ int main(int argc, char *argv[])
 }
 
 ```
+
+### blur and edge detection
+```c
+// Blur image
+void blur(int height, int width, RGBTRIPLE image[height][width])
+{
+    float count;
+    int sumR, sumG, sumB;
+    RGBTRIPLE copy[height][width];
+
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            copy[i][j] = image[i][j];
+        }
+    }
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            sumR = sumG = sumB = count = 0;
+            for (int row = i - 1; row <= i + 1; row++)
+            {
+                for (int col = j - 1; col <= j + 1; col++)
+                {
+                    if (row >= 0 && row < height && col >= 0 && col < width)
+                    {
+                        sumR += copy[row][col].rgbtRed;
+                        sumG += copy[row][col].rgbtGreen;
+                        sumB += copy[row][col].rgbtBlue;
+                        count++;
+                    }
+                }
+            }
+            image[i][j].rgbtRed = clamp(round(sumR / count));
+            image[i][j].rgbtGreen = clamp(round(sumG / count));
+            image[i][j].rgbtBlue = clamp(round(sumB / count));
+        }
+    }
+    return;
+}
+
+// Detect edges
+void edges(int height, int width, RGBTRIPLE image[height][width])
+{
+    RGBTRIPLE copy[height][width];
+
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            copy[i][j] = image[i][j];
+        }
+    }
+
+    int gxR, gxG, gxB, gyR, gyG, gyB;
+    int gx[3][3] = {
+        {-1, 0, 1},
+        {-2, 0, 2},
+        {-1, 0, 1}},
+        gy[3][3] = {
+            {-1, -2, -1},
+            {0, 0, 0},
+            {1, 2, 1}
+        };
+
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            gxR = gxG = gxB = gyR = gyG = gyB = 0;
+            for (int fi = -1; fi <= 1; fi++)
+            {
+                for (int fj = -1; fj <= 1; fj++)
+                {
+                    if ((i + fi) >= 0 && (i + fi) < height && (j + fj) >= 0 && (j + fj) < width)
+                    {
+                        gxR += copy[i + fi][j + fj].rgbtRed * gx[fi + 1][fj + 1];
+                        gxG += copy[i + fi][j + fj].rgbtGreen * gx[fi + 1][fj + 1];
+                        gxB += copy[i + fi][j + fj].rgbtBlue * gx[fi + 1][fj + 1];
+
+                        gyR += copy[i + fi][j + fj].rgbtRed * gy[fi + 1][fj + 1];
+                        gyG += copy[i + fi][j + fj].rgbtGreen * gy[fi + 1][fj + 1];
+                        gyB += copy[i + fi][j + fj].rgbtBlue * gy[fi + 1][fj + 1];
+                    }
+                }
+            }
+
+            image[i][j].rgbtRed = clamp(hypot(gxR, gyR));
+            image[i][j].rgbtGreen = clamp(hypot(gxG, gyG));
+            image[i][j].rgbtBlue = clamp(hypot(gxB, gyB));
+        }
+    }
+    return;
+}
+
+```
+
+## Data Structures - Part 2:
+### queue - FIFO
+- enqueue
+- dequeue
+### stacks - LIFO
+- push
+- pop
+### Linked List - 
+```c
+typedef struct
+{
+    int number;
+    node *next;
+} node;
+
+// using struct name of same struct is not allowed here so defining in a different way
+typedef struct node
+{
+    int number;
+    struct node *next;
+} node;
+```
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node
+{
+    int roll_number;
+    char *name=malloc(sizeof(char)*20);
+    if(name == NULL)
+    {
+        printf("Memory allocation failed.\n");
+        return 1;
+    }
+    struct node *next;
+} node;
+
+int main(void)
+{
+    node *list = NULL;
+    int n;
+    printf("Enter Number of students: ");
+    scanf("%i", &n);
+    for(int i = 0; i < n; i++)
+    {
+        node *temp = malloc(sizeof(node));
+        fgets(temp->name, sizeof(temp->name), stdin);
+        temp->roll_number = i;
+        temp->next = list;
+        list = temp;
+        free(temp);
+    }
+    return 0;
+}
+```
+
+### Tree - 2d data structure 
+- binary tree
+
+### dictionary 
+- hash tables - O(n)
