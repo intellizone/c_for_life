@@ -944,32 +944,179 @@ typedef struct node
 typedef struct node
 {
     int roll_number;
-    char *name=malloc(sizeof(char)*20);
-    if(name == NULL)
-    {
-        printf("Memory allocation failed.\n");
-        return 1;
-    }
     struct node *next;
 } node;
 
 int main(void)
 {
     node *list = NULL;
-    int n;
-    printf("Enter Number of students: ");
-    scanf("%i", &n);
-    for(int i = 0; i < n; i++)
+    for (int i = 0; i < 3; i++)
     {
         node *temp = malloc(sizeof(node));
-        fgets(temp->name, sizeof(temp->name), stdin);
-        temp->roll_number = i;
-        temp->next = list;
-        list = temp;
-        free(temp);
+        if (temp == NULL)
+        {
+            return 1;
+        }
+        printf("Enter rollnumber: ");
+        scanf("%i", &temp->roll_number);
+        temp->next = NULL;
+        // if empty
+        if (list == NULL)
+        {
+            list = temp;
+        }
+        // if not empty
+        else
+        {
+            // find last node
+            for (node *ptr = list; ptr != NULL; ptr = ptr->next)
+            {
+                if (ptr->next == NULL)
+                {
+                    ptr->next = temp;
+                    break;
+                }
+            }
+        }
+    }
+
+    for (node *ptr = list; ptr != NULL; ptr = ptr->next)
+    {
+        printf("%i\n", ptr->roll_number);
+    }
+
+    node *ptr = list;
+    while (ptr != NULL)
+    {
+        ptr = list->next;
+        free(list);
+        list = next;
     }
     return 0;
 }
+
+
+// with recursion
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define LIST_LEN 3
+
+typedef struct node
+{
+    int val;
+    struct node *next;
+} node;
+
+node *populate_list(int num, node *arr);
+void visualize(node *arr);
+
+int main(void)
+{
+    node *list = NULL;
+    list = populate_list(LIST_LEN, list);
+    visualize(list);
+    return 0;
+}
+
+node *populate_list(int num, node *arr)
+{
+    if(num > 0)
+    {
+        node *temp = malloc(sizeof(node));
+        if(temp == NULL)
+        {
+            return NULL;
+        }
+        printf("Enter a number: ");
+        scanf("%i", &temp->val);
+        temp->next = arr;
+        arr = temp;
+        return populate_list(num-1, arr);
+
+    }
+    return arr;
+}
+
+void visualize(node *arr)
+{
+    for(node *ptr = arr; ptr != NULL; ptr=ptr->next)
+    {
+        printf("%p --> %i\n",ptr->next, ptr->val);
+    }
+}
+
+
+// always sorted linked list
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node
+{
+    int roll_number;
+    struct node *next;
+} node;
+
+int main(void)
+{
+    node *list = NULL;
+    for (int i = 0; i < 3; i++)
+    {
+        node *temp = malloc(sizeof(node));
+        if (temp == NULL)
+        {
+            return 1;
+        }
+        printf("Enter rollnumber: ");
+        scanf("%i", &temp->roll_number);
+        temp->next = NULL;
+        // if empty
+        if (list == NULL)
+        {
+            list = temp;
+        }
+        // if number is smallest append at start
+        else if (temp->roll_number < list->roll_number)
+        {
+            temp->next = list;
+            list = temp;
+        }
+        else
+        {
+            // find last node
+            for (node *ptr = list; ptr != NULL; ptr = ptr->next)
+            {
+                if (ptr->next == NULL)
+                {
+                    ptr->next = temp;
+                    break;
+                }
+                if(temp->roll_number < ptr->next->roll_number)
+                {
+                    temp->next = ptr->next;
+                    ptr->next = temp;
+                    break;
+                }
+            }
+        }
+    }
+
+    for (node *ptr = list; ptr != NULL; ptr = ptr->next)
+    {
+        printf("%i\n", ptr->roll_number);
+    }
+
+    node *ptr = list;
+    while (list != NULL)
+    {
+        node *next = list->next;
+        free(list);
+        list = next;
+    }
+    return 0;
+}
+
 ```
 
 ### Tree - 2d data structure 
@@ -977,3 +1124,4 @@ int main(void)
 
 ### dictionary 
 - hash tables - O(n)
+
