@@ -190,9 +190,938 @@ int main(int argc, string argv[]);
 // argv --> argument vector
 ```
 
+```bash
+# usage
+./main "someText"
+```
+
 ## strings in c
 ```c
 #include <string.h>
 
 int strlen(char *string);
 ```
+
+## character operations in c
+```c
+#include <ctype.h>
+```
+
+## exit code
+> mostly exit code **0** indicates success \
+> Non 0 indicates something \
+> -ve values says errors or  failures.
+
+## functions
+- subroutines 
+- procedures
+- methods
+- blackbox
+
+### why functions?
+- organization
+- simplification - easy to debug
+- reusability 
+
+all meaning the same
+
+input --> functions --> outputs
+
+```c
+// return_value_type function_name(argument_type argument_variable/value,.....);
+int mul(int a, int b);
+```
+
+> no return value use "void"
+```c
+void main(void)
+// no input no output
+```
+
+## type-casting
+```c
+// (int) 3.0
+
+
+#include <stdio.h>
+
+int main(void){
+    printf("%i\n",(int) 3.0);
+}
+```
+## variable scope
+- local
+- global
+
+## Algorithms:
+### Big O notaion (O) - Worst case senario:
+- O($n^2$)
+- O(nlogn)
+- O(n)      - Linear search
+- O(logn) - Binary search
+- O(1)
+### Big omega - Best case senario - ($\Omega$)
+- $\Omega$($n^2$)
+- $\Omega$(nlogn)
+- $\Omega$(n)
+- $\Omega$(logn)
+- $\Omega$(1) - Linear search, binary search
+
+### Teta notation - When big O and big omega are same
+- $\theta$($n^2$)
+- $\theta$(nlogn)
+- $\theta$(n)
+- $\theta$(logn)
+- $\theta$(1)
+
+
+## Linear search
+- Search one by one
+
+```c
+#include <cs50.h>
+#include <stdio.h>
+
+int linear_search(int arr[], int l, int k);
+
+int main(void)
+{
+    int arr_len = 7;
+    int arr[] = {200, 10, 5, 70, 95, 86, 80};
+    int key = get_int("Enter search number: ");
+
+    if (linear_search(arr, arr_len, key) == 0)
+    {
+        printf("Found\n");
+    }
+    else
+    {
+        printf("Not Found\n");
+    }
+}
+
+int linear_search(int arr[], int l, int k)
+{
+    for (int i = 0; i < l; i++)
+    {
+        if (arr[i] == k)
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+```
+
+## Data Structures:
+```c
+typedef struct
+{
+    // data_type variable_name;
+    string name;
+    string number;
+} person;
+
+person persons;
+persons.name = "John";
+persons.number = "+11-111-111";
+
+// here dot operator ( . )
+// *
+// -> is using both . and * operator at same time
+
+typedef struct
+{
+    string name;
+    string number;
+} person;
+
+person *new=malloc(sizeof(person));
+(*new).name = "Something";
+//
+new->name = "Something"; // we can use like this aswell
+```
+
+```c
+// Linear search with string
+
+#include <cs50.h>
+#include <stdio.h>
+#include <string.h>
+
+typedef struct
+{
+    string name;
+    string location;
+} person;
+
+int linear_search(person arr[], int l, string k);
+
+int main(void)
+{
+    int arr_len = 3;
+    person people[arr_len];
+    people[0].name = "Suriya";
+    people[0].location = "Pune";
+
+    people[1].name = "Dragon";
+    people[1].location = "Mars";
+
+    people[2].name = "john";
+    people[2].location = "Delhi";
+
+    string key = get_string("Enter search word: ");
+
+    int index = linear_search(people, arr_len, key);
+    if (index != -1)
+    {
+        printf("Lives in %s\n", people[index].location);
+    }
+    else
+    {
+        printf("Not Found\n");
+    }
+}
+
+int linear_search(person arr[], int l, string k)
+{
+    for (int i = 0; i < l; i++)
+    {
+        if (strcmp(arr[i].name, k) == 0)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+```
+
+## sorting
+### Selection Sort --> O($n^2$), $\Omega$($n^2$), $\theta$($n^2$)
+```MD
+# Algorithm
+For i from 0 to n-1:
+    find smallest number between 0 and n-1
+    swap number[i] with smallest number
+```
+
+```c
+#include <cs50.h>
+#include <stdio.h>
+
+void selection_sort(int l, int arr[]);
+
+int main(void)
+{
+    int l = 6, arr[] = {11, 5, 4, 2, 1, 6};
+    selection_sort(l, arr);
+}
+
+void selection_sort(int l, int arr[])
+{
+    int smallest_position, temp;
+    for (int i = 0; i < l; i++)
+    {
+        smallest_position = i;
+        for (int j = i + 1; j < l; j++)
+        {
+            if (arr[j] < arr[smallest_position])
+            {
+                smallest_position = j;
+            }
+        }
+        temp = arr[smallest_position];
+        arr[smallest_position] = arr[i];
+        arr[i] = temp;
+    }
+    for (int i = 0; i < l; i++)
+    {
+        printf("%i ", arr[i]);
+    }
+    printf("\n");
+}
+
+```
+
+### Bubble Sort --> O($n^2$), $\Omega$($n^2$) and $\Omega$($n$)
+```md
+# Algo -- usual way 
+Repeat n-1 times:
+    for i from 0 to n-1:
+        if num[i] and num[i+1] are out of order:
+            swap them
+
+
+####################
+
+# Algo - Optimal way
+Repeat n-1 times:
+    for i from 0 to n-1:
+        if num[i] and num[i+1] are out of order:
+            swap them
+    if no swap:
+        Quit
+```
+
+```c
+#include <cs50.h>
+#include <stdio.h>
+
+void bubble_sort(int l, int arr[]);
+void print_arr(int l, int arr[]);
+
+int main(void)
+{
+    int arr[] = {1, 6, 2, 3, 4, 5}, l = 6;
+    bubble_sort(l, arr);
+}
+
+void bubble_sort(int l, int arr[])
+{
+    int temp, swap;
+    for (int i = 0; i < l - 1; i++)
+    {
+        swap = 0;
+        for (int j = 0; j < l - i - 1; j++)
+        {
+            if (arr[j] > arr[j + 1])
+            {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                swap = 1;
+            }
+        }
+        // With optimization - this makes it stop sorting soreted array
+        if (swap == 0)
+        {
+            break;
+        }
+    }
+    print_arr(l, arr);
+}
+
+void print_arr(int l, int arr[])
+{
+    for (int i = 0; i < l; i++)
+        printf("%i ", arr[i]);
+    printf("\n");
+}
+
+```
+
+## Recursion:
+- printing * pyramid with recursion.
+```c
+#include <cs50.h>
+#include <stdio.h>
+
+void draw(int n);
+
+int main(void)
+{
+    int n = get_int("Height: ");
+    draw(n);
+}
+
+void draw(int n)
+{
+    if (n <= 0)
+        return;
+    draw(n - 1);
+    for (int i = 0; i < n; i++)
+        printf("*");
+    printf("\n");
+}
+
+/*
+Output:
+
+Height: 5
+*
+**
+***
+****
+*****
+
+*/
+
+```
+
+```c 
+// binary search with recursion 
+#include <cs50.h>
+#include <stdio.h>
+
+int binary_search(int first, int last, int arr[], int k);
+
+int main(void)
+{
+    int l = 5, arr[] = {1, 2, 3, 4, 5}, k = get_int("Enter a number to search: ");
+    if (binary_search(0, 5, arr, k) == 0)
+    {
+        printf("value %i is found.\n", k);
+    }
+    else
+    {
+        printf("value %i is not found.\n", k);
+    }
+}
+
+int binary_search(int first, int last, int arr[], int k)
+{
+    if (first > last)
+        return 1;
+
+    int middle = first + (last - first) / 2;
+    if (arr[middle] == k)
+        return 0;
+    else if (k < arr[middle])
+        return binary_search(first, middle - 1, arr, k);
+    else
+        return binary_search(middle + 1, last, arr, k);
+}
+
+```
+
+## Merge Sort - O(nlogn) - $\Omega$(nlogn)
+```md
+if only one number:
+    quit
+else:
+    sort the left half
+    sort the right half
+    merge sorted halves
+```
+
+```c
+#include <stdio.h>
+
+void merge_sort(int arr[], int start, int end);
+void merge_arr(int arr[], int start, int end);
+void print_arr(int arr[], int l);
+
+int main(void)
+{
+    int l = 8, arr[] = {5, 2, 7, 1, 3, 8, 6, 4};
+    merge_sort(arr, 0, l - 1);
+    print_arr(arr, l);
+}
+
+void merge_sort(int arr[], int start, int end)
+{
+    if (start >= end)
+        return;
+    else
+    {
+        merge_sort(arr, start, start + (end - start) / 2);
+        merge_sort(arr, start + (end - start) / 2 + 1, end);
+        merge_arr(arr, start, end);
+    }
+}
+
+void merge_arr(int arr[], int start, int end)
+{
+    int mid = start + (end - start) / 2;
+    int ls = start, le = mid, rs = mid + 1, re = end;
+
+    int L[le - ls + 1], R[re - rs + 1];
+
+    for (int i = 0; i <= le - ls; i++)
+        L[i] = arr[ls + i];
+    for (int i = 0; i <= re - rs; i++)
+        R[i] = arr[rs + i];
+
+    int i = 0, j = 0, l = start;
+    while (i <= le - ls && j <= re - rs)
+    {
+        if (L[i] <= R[j])
+        {
+            arr[l] = L[i];
+            i++;
+        }
+        else
+        {
+            arr[l] = R[j];
+            j++;
+        }
+        l++;
+    }
+    // add other elements to array
+
+    while (i <= le - ls)
+    {
+        arr[l] = L[i];
+        i++;
+        l++;
+    }
+    while (j <= re - rs)
+    {
+        arr[l] = R[j];
+        j++;
+        l++;
+    }
+}
+
+void print_arr(int arr[], int l)
+{
+    for (int i = 0; i < l; i++)
+        printf("%i ", arr[i]);
+    printf("\n");
+}
+
+```
+
+## Memory
+- binary - 0,1
+- decimal - 0 ... 9
+- octal - 0 ... 7
+- hexadecimal - 0 ... 9 A ... F
+
+```c
+int n = 50;
+printf("%i\n", n);
+// to print address use & operator
+// & --> address of operator
+printf("%i\n", &n);
+// * --> dereference operator (go to that address)
+// %p --> pointer
+
+int n = 10;
+int *p = &n; // address of n is assigned to p position
+
+printf("%i\n", *p);
+
+printf("%p\n", p); // see the difference if %p use pointer variable, if %i use *p. 
+
+printf("%p\n", &n);
+
+
+*p = 100; // or p[0] = 100
+
+printf("%i\n", u); // the above reflects in integer u aswell
+
+```
+### pointer arithmetics
+
+```c
+#include <stdio.h>
+
+int main()
+{
+    char *s = "Hi!";
+    printf("%c\n", s[0]);
+    printf("%c\n", s[1]);
+    printf("%c\n", s[2]);
+    // OR this way
+    printf("%c\n", *(s + 0));
+    printf("%c\n", *(s + 0));
+    printf("%c\n", *(s + 0));
+
+    // both are correct
+}
+```
+
+### memory allocations 
+```c
+#include <stdlib.h>
+
+int main()
+{
+    int *t = malloc(5);
+
+    free(t);
+}
+```
+Memory analysing tool valgrind
+
+
+## file i/o
+- fopen
+- fclose
+- fprintf \
+. \
+. \
+. \
+. \
+. 
+
+
+```c
+int16_t *buffer = malloc(sizeof(int16_t));
+if(buffer == NULL)
+{
+    printf("Malloc failed..\n");
+}
+```
+
+### recover data from a memory card
+```c
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef uint8_t BYTE;
+
+int main(int argc, char *argv[])
+{
+    if (argc != 2)
+    {
+        printf("Usage: %s <file name>\n", argv[0]);
+        return 1;
+    }
+    FILE *memory_card = fopen(argv[1], "r"), *output = NULL;
+    if (memory_card == NULL)
+    {
+        printf("File open failed\n");
+        return 2;
+    }
+    BYTE *buffer = malloc(sizeof(BYTE) * 512);
+    if (buffer == NULL)
+    {
+        printf("Memory allocation failed\n");
+        return 1;
+    }
+
+    int file_num = 0;
+    char *file_name = malloc(sizeof(char) * 10);
+    while (fread(buffer, sizeof(BYTE), 512, memory_card) == 512)
+    {
+        if (buffer[0] == 0xff && buffer[1] == 0xd8 && buffer[2] == 0xff &&
+            (buffer[3] >= 0xe0 && buffer[3] <= 0xef))
+        {
+            if (file_num > 0)
+            {
+                fclose(output);
+            }
+            sprintf(file_name, "%03d.jpg", file_num);
+            output = fopen(file_name, "w");
+            if (output == NULL)
+            {
+                printf("File creation failed\n");
+                return 1;
+            }
+            file_num++;
+        }
+        if (output != NULL)
+        {
+            fwrite(buffer, sizeof(BYTE), 512, output);
+        }
+    }
+    free(buffer);
+    free(file_name);
+    fclose(memory_card);
+    fclose(output);
+}
+
+```
+
+### blur and edge detection
+```c
+// Blur image
+void blur(int height, int width, RGBTRIPLE image[height][width])
+{
+    float count;
+    int sumR, sumG, sumB;
+    RGBTRIPLE copy[height][width];
+
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            copy[i][j] = image[i][j];
+        }
+    }
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            sumR = sumG = sumB = count = 0;
+            for (int row = i - 1; row <= i + 1; row++)
+            {
+                for (int col = j - 1; col <= j + 1; col++)
+                {
+                    if (row >= 0 && row < height && col >= 0 && col < width)
+                    {
+                        sumR += copy[row][col].rgbtRed;
+                        sumG += copy[row][col].rgbtGreen;
+                        sumB += copy[row][col].rgbtBlue;
+                        count++;
+                    }
+                }
+            }
+            image[i][j].rgbtRed = clamp(round(sumR / count));
+            image[i][j].rgbtGreen = clamp(round(sumG / count));
+            image[i][j].rgbtBlue = clamp(round(sumB / count));
+        }
+    }
+    return;
+}
+
+// Detect edges
+void edges(int height, int width, RGBTRIPLE image[height][width])
+{
+    RGBTRIPLE copy[height][width];
+
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            copy[i][j] = image[i][j];
+        }
+    }
+
+    int gxR, gxG, gxB, gyR, gyG, gyB;
+    int gx[3][3] = {
+        {-1, 0, 1},
+        {-2, 0, 2},
+        {-1, 0, 1}},
+        gy[3][3] = {
+            {-1, -2, -1},
+            {0, 0, 0},
+            {1, 2, 1}
+        };
+
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            gxR = gxG = gxB = gyR = gyG = gyB = 0;
+            for (int fi = -1; fi <= 1; fi++)
+            {
+                for (int fj = -1; fj <= 1; fj++)
+                {
+                    if ((i + fi) >= 0 && (i + fi) < height && (j + fj) >= 0 && (j + fj) < width)
+                    {
+                        gxR += copy[i + fi][j + fj].rgbtRed * gx[fi + 1][fj + 1];
+                        gxG += copy[i + fi][j + fj].rgbtGreen * gx[fi + 1][fj + 1];
+                        gxB += copy[i + fi][j + fj].rgbtBlue * gx[fi + 1][fj + 1];
+
+                        gyR += copy[i + fi][j + fj].rgbtRed * gy[fi + 1][fj + 1];
+                        gyG += copy[i + fi][j + fj].rgbtGreen * gy[fi + 1][fj + 1];
+                        gyB += copy[i + fi][j + fj].rgbtBlue * gy[fi + 1][fj + 1];
+                    }
+                }
+            }
+
+            image[i][j].rgbtRed = clamp(hypot(gxR, gyR));
+            image[i][j].rgbtGreen = clamp(hypot(gxG, gyG));
+            image[i][j].rgbtBlue = clamp(hypot(gxB, gyB));
+        }
+    }
+    return;
+}
+
+```
+
+## Data Structures - Part 2:
+### queue - FIFO
+- enqueue
+- dequeue
+### stacks - LIFO
+- push
+- pop
+### Linked List - 
+```c
+typedef struct
+{
+    int number;
+    node *next;
+} node;
+
+// using struct name of same struct is not allowed here so defining in a different way
+typedef struct node
+{
+    int number;
+    struct node *next;
+} node;
+```
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node
+{
+    int roll_number;
+    struct node *next;
+} node;
+
+int main(void)
+{
+    node *list = NULL;
+    for (int i = 0; i < 3; i++)
+    {
+        node *temp = malloc(sizeof(node));
+        if (temp == NULL)
+        {
+            return 1;
+        }
+        printf("Enter rollnumber: ");
+        scanf("%i", &temp->roll_number);
+        temp->next = NULL;
+        // if empty
+        if (list == NULL)
+        {
+            list = temp;
+        }
+        // if not empty
+        else
+        {
+            // find last node
+            for (node *ptr = list; ptr != NULL; ptr = ptr->next)
+            {
+                if (ptr->next == NULL)
+                {
+                    ptr->next = temp;
+                    break;
+                }
+            }
+        }
+    }
+
+    for (node *ptr = list; ptr != NULL; ptr = ptr->next)
+    {
+        printf("%i\n", ptr->roll_number);
+    }
+
+    node *ptr = list;
+    while (ptr != NULL)
+    {
+        ptr = list->next;
+        free(list);
+        list = next;
+    }
+    return 0;
+}
+
+
+// with recursion
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define LIST_LEN 3
+
+typedef struct node
+{
+    int val;
+    struct node *next;
+} node;
+
+node *populate_list(int num, node *arr);
+void visualize(node *arr);
+
+int main(void)
+{
+    node *list = NULL;
+    list = populate_list(LIST_LEN, list);
+    visualize(list);
+    return 0;
+}
+
+node *populate_list(int num, node *arr)
+{
+    if(num > 0)
+    {
+        node *temp = malloc(sizeof(node));
+        if(temp == NULL)
+        {
+            return NULL;
+        }
+        printf("Enter a number: ");
+        scanf("%i", &temp->val);
+        temp->next = arr;
+        arr = temp;
+        return populate_list(num-1, arr);
+
+    }
+    return arr;
+}
+
+void visualize(node *arr)
+{
+    for(node *ptr = arr; ptr != NULL; ptr=ptr->next)
+    {
+        printf("%p --> %i\n",ptr->next, ptr->val);
+    }
+}
+
+
+// always sorted linked list
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node
+{
+    int roll_number;
+    struct node *next;
+} node;
+
+int main(void)
+{
+    node *list = NULL;
+    for (int i = 0; i < 3; i++)
+    {
+        node *temp = malloc(sizeof(node));
+        if (temp == NULL)
+        {
+            return 1;
+        }
+        printf("Enter rollnumber: ");
+        scanf("%i", &temp->roll_number);
+        temp->next = NULL;
+        // if empty
+        if (list == NULL)
+        {
+            list = temp;
+        }
+        // if number is smallest append at start
+        else if (temp->roll_number < list->roll_number)
+        {
+            temp->next = list;
+            list = temp;
+        }
+        else
+        {
+            // find last node
+            for (node *ptr = list; ptr != NULL; ptr = ptr->next)
+            {
+                if (ptr->next == NULL)
+                {
+                    ptr->next = temp;
+                    break;
+                }
+                if(temp->roll_number < ptr->next->roll_number)
+                {
+                    temp->next = ptr->next;
+                    ptr->next = temp;
+                    break;
+                }
+            }
+        }
+    }
+
+    for (node *ptr = list; ptr != NULL; ptr = ptr->next)
+    {
+        printf("%i\n", ptr->roll_number);
+    }
+
+    node *ptr = list;
+    while (list != NULL)
+    {
+        node *next = list->next;
+        free(list);
+        list = next;
+    }
+    return 0;
+}
+
+```
+
+### Tree - 2d data structure 
+- binary tree
+
+### dictionary 
+- hash tables - O(n)
