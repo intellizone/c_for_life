@@ -189,6 +189,7 @@ int main(int argc, string argv[]);
 // argc --> argument count
 // argv --> argument vector
 ```
+
 ```bash
 # usage
 ./main "someText"
@@ -1124,4 +1125,3 @@ int main(void)
 
 ### dictionary 
 - hash tables - O(n)
-
